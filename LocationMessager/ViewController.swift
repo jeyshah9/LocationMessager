@@ -13,7 +13,17 @@ class ViewController: UIViewController , MFMessageComposeViewControllerDelegate{
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        let date = Date()
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: date)
+        
+        if(hour>14){
+            createMessage(body:"Leaving now 😉 ... See you soon");
+        }else{
+            createMessage(body:"Reached 😘 .. Have a nice day 😘");
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -22,27 +32,14 @@ class ViewController: UIViewController , MFMessageComposeViewControllerDelegate{
     }
 
     @IBAction func SendBtnClicked(_ sender: UIButton) {
-        let composeVC = MFMessageComposeViewController()
-        composeVC.messageComposeDelegate = self
-        
-        // Configure the fields of the interface.
-        composeVC.recipients = ["XXXXXXXX"]
-        composeVC.body = "Reached";
-        
-        if !MFMessageComposeViewController.canSendText() {
-            print("SMS services are not available")
-        }
         
         if(sender.tag==0){
             print("Reached");
-            composeVC.body = "Reached 😘 .. Have a nice day 😘";
+           createMessage(body:"Reached 😘 .. Have a nice day 😘");
         }else if (sender.tag==1){
             print("leaving");
-            composeVC.body = "Leaving now 😉 ... See you soon";
+            createMessage(body:"Leaving now 😉 ... See you soon");
         }
-        
-        // Present the view controller modally.
-        self.present(composeVC, animated: true, completion: nil)
         
     }
     
@@ -53,6 +50,18 @@ class ViewController: UIViewController , MFMessageComposeViewControllerDelegate{
         
     }
     
+    func createMessage(body:String) -> Void {
+        let composeVC = MFMessageComposeViewController()
+        composeVC.messageComposeDelegate = self
+        
+        // Configure the fields of the interface.
+        composeVC.recipients = ["XXXXXXX"]
+        composeVC.body = body;
+        
+        // Present the view controller modally.
+        self.present(composeVC, animated: true, completion: nil)
+        
+    }
    
     
 }
